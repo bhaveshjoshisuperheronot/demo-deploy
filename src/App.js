@@ -16,7 +16,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          T Maa ka bharosa
+          Finally Exported
         </a>
       </header>
     </div>
