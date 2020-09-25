@@ -1,0 +1,60 @@
+.col-left {
+    width: 20%;
+}
+.col-right {
+    width: 80%;
+}
+.row-main {
+    height: 80px;
+    padding: 16px 20px;
+    background-color: #212121;
+    color: #fff;
+    border: 4px solid #01111B;
+    border-top: none;
+    border-left: none;
+    position: relative;
+}
+.row-right, .row-left  {
+    display: flex;
+    align-items: center;
+}
+.row-timings, .row-show-list {
+    height: 50px;
+    color: #fff;
+}
+.row-right-col-1 {width: 20%;}
+.row-right-col-2 {width: 40%;}
+.row-right-col-3 {width: 60%;}
+.row-right-col-4 {width: 80%;}
+.row-right-col-5 {width: 100%;}
+.bokoo-genre {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 10px;
+    color: #FD841A;
+}
+.bokoo-number {
+    font-size: 20px;
+    color: #000;
+    font-weight: bold;
+    margin: 0 8px 0 0;
+}
+.bokoo-brand-img {
+    margin: 0 8px;
+    max-width: 140px;
+}
+.show-head {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 600;
+}
+.show-text {
+    font-size: 14px;
+    line-height: normal;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+}

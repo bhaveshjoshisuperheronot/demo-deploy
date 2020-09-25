@@ -1,0 +1,16 @@
+.page-footer {
+    display: flex;
+    justify-content: flex-start;
+    padding: 20px 0!important;
+}
+.page-footer div, .page-footer a{
+    font-size: 16px;
+    color: #fff;
+}
+.page-footer div {
+    margin: 0 40px 0 0;
+}
+.page-footer a{
+    color: #a2a2a2;
+    margin: 0 25px 0 0;
+}

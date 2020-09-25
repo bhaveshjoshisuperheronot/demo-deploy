@@ -1,0 +1,30 @@
+.bokoo-main-logo {
+    margin: 10px 0 0;
+}
+.bokoo-main-menu {
+    display: flex;
+    justify-content: space-evenly;
+}
+.bokoo-right-menu {
+    display: flex;
+    justify-content: flex-end;
+}
+.bokoo-main-menu li {
+    font-size: 18px;
+    width: 33%;
+    text-align: center;
+}
+.bokoo-main-menu li a.active {
+    font-weight: 600;
+    background: #FD841A;
+}
+.bokoo-right-menu li a {
+    font-size: 12px;
+}
+.bokoo-user-acc{
+    display: flex;
+    align-items: center;
+}
+.bokoo-user-acc img{
+    margin: 0 5px 0 0;
+}
