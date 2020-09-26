@@ -18,6 +18,7 @@
     display: flex;
     align-items: center;
 }
+
 .row-timings, .row-show-list {
     height: 50px;
     color: #fff;
@@ -27,6 +28,30 @@
 .row-right-col-3 {width: 60%;}
 .row-right-col-4 {width: 80%;}
 .row-right-col-5 {width: 100%;}
+.row-left.active {
+    background: rgba(255,255,255,1);
+}
+.row-right.active {position: relative;}
+.row-right.active .row-main:first-child:after {
+    position: absolute;
+    width: calc(100%);
+    height: calc(100%);
+    background: #E09444;
+    top: 0;
+    left: 0;
+    content: '';
+    z-index: 0;
+}
+.row-right.active .row-main:first-child:before {
+    position: absolute;
+    width: calc(50%);
+    height: calc(100%);
+    background: #D46E02;
+    top: 0;
+    left: 0;
+    content: '';
+    z-index: 1;
+}
 .bokoo-genre {
     position: absolute;
     top: 5px;
@@ -48,6 +73,8 @@
     margin: 0 0 8px;
     font-size: 18px;
     font-weight: 600;
+    position: relative;
+    z-index: 2;
 }
 .show-text {
     font-size: 14px;
@@ -57,4 +84,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
     position: relative;
+    position: relative;
+    z-index: 2;
+}
+.banner-video {
+    padding: 40px 0;
+    background: rgba(0,0,0,0.5);
+}
+.banner-video .video-js {
+    display: block;
+    margin: 0 auto;
+    border: 1px solid #555;
 }
