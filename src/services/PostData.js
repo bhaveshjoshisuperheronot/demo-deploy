@@ -3,15 +3,12 @@ export function PostData(type, userData) {
     // alert(JSON.stringify(userData))
     return new Promise((resolve, reject) => {
         fetch(BaseUrl+type, {
-            method: 'POST',    
-            body: JSON.stringify(userData),        
+            method: 'POST',
             header: {
-                'Access-Control-Allow-Origin': "*",
-                'Access-Control-Allow-Headers' : "*",
-                'Referrer-Policy' : "origin",
-                'Accept' :  'application/json',
-                'Content-type' :  'application/json'
-            }
+                'Accept': 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(userData)
         })
         .then((response) => response.json())
         .then((responseJson) => {
