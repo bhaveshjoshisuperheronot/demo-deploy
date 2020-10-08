@@ -18,7 +18,6 @@ class Login extends Component {
     }
 
     login() {
-
         if(this.state.email && this.state.password){
             PostData('login', this.state).then((result) => {
                 let responseJson = result;

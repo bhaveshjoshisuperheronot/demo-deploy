@@ -126,13 +126,10 @@
     margin: 0 0 20px;
 }
 
-.page--content-main {
-    padding: 0px 50px 40px;
-}
-
 .radio-btn[type="radio"]{
     position: relative;
     opacity: 1;
+    margin: 0 5px 0 0;
 }
 .radio label {
     font-size: 16px;
@@ -149,4 +146,86 @@
 .page--content input[type='text']:focus{
     border: 1px solid #327c00!important;
     box-shadow: none!important;
+}
+
+.page--content-main .tabs {
+    height: auto;
+    border-radius: 10px;
+}
+
+.page--content-main .tabs .nav-tabs .nav-item {
+    display: inline-block;    
+}
+
+.page--content-main .tabs .tab-content {
+    padding: 20px 40px 40px;
+}
+
+.page--content-main .tabs .nav-tabs .nav-item .nav-link {
+    padding: 20px 20px 10px 20px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    position: relative;
+}
+
+.page--content-main .tabs .nav-tabs {
+    margin: 0 0 30px;
+    padding: 15px 10px 7px;
+    border-bottom: 1px solid #dedede;
+}
+
+.page--content-main .tabs .nav-tabs .nav-item .nav-link.active {
+    color: #327c00;
+}
+.page--content-main .tabs .nav-tabs .nav-item .nav-link.active:before {
+    content: '';
+    position: absolute;
+    width: calc(100% - 30px);
+    border-bottom: 2px solid #327c00;
+    bottom: 0;
+    left: 15px;
+}
+
+.formLabels{
+    display: block;
+}
+
+.page--header-text {
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    padding: 0 10px;
+    margin: 0 0 20px;
+}
+
+.page--content-main .button, .page--content-main .secondary-button {
+    padding: 5px 12px;
+    color: #fff;
+    font-size: 16px;
+    background-color: #477F00;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 20px 5px 0 0;
+    box-sizing: border-box;
+    line-height: 1.28;
+    height: 30px;
+    display: inline-block;
+    transition: 0.3s all;
+}
+.page--content-main .secondary-button {
+    background-color: #fff;
+    font-size: 14px;
+    color: #477F00;
+    border: 1px solid #477F00;
+}
+.page--content-main .button:hover, .page--content-main .secondary-button:hover {
+    transform: scale(1.1);
+}
+.page--content-main .secondary-button:hover {
+    background-color: rgba(71, 127, 0, 0.3);
 }

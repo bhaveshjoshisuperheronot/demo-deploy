@@ -7,11 +7,12 @@ class Signup extends Component {
     constructor(props){
         super(props);
             this.state = {
-                name: '',
-                email: '',
-                password: '',
-                phoneNumber: '',
-                redirect: false
+                'name': '',
+                'email': '',
+                'mobile': '',
+                'password': '',
+                'password_confirmation' : '',              
+                'redirect': false
             }
         
         this.signup = this.signup.bind(this);
@@ -22,7 +23,7 @@ class Signup extends Component {
     signup() {
 
         if(this.state.email && this.state.password){
-            PostData('signup', this.state).then((result) => {
+            PostData('register', this.state).then((result) => {
                 let responseJson = result;
                 if(responseJson.userData){
                     sessionStorage.setItem('userData', responseJson);
@@ -30,7 +31,8 @@ class Signup extends Component {
                         redirect: true
                     })
                 }else{
-                    console.log('Login Error');
+                    console.log('Sign Up Error');
+                    alert(responseJson.message)
                 }
             })
         }
@@ -77,20 +79,20 @@ class Signup extends Component {
                         </div>
                         <div className="input--field-box">
                             <input 
-                            className={`input--field ${(this.state.phoneNumber)? 'focused' : '' }`}
+                            className={`input--field ${(this.state.mobile)? 'focused' : '' }`}
                             type="number" 
-                            name="phoneNumber" 
+                            name="mobile" 
                             placeholder="9876543210" 
                             onChange={this.onChange} 
                             onBlur={this.onBlur}/>
-                            <label>Phone Number</label>
+                            <label>Mobile Number</label>
                         </div>
                     </div>
                     <div className="col s6">
                         <div className="input--field-box">
                             <input 
                             className={`input--field ${(this.state.email)? 'focused' : '' }`}
-                            type="text" 
+                            type="email" 
                             name="email" 
                             placeholder="abc@xyz.com" 
                             onChange={this.onChange} 
@@ -105,6 +107,15 @@ class Signup extends Component {
                             onChange={this.onChange} 
                             onBlur={this.onBlur}/>
                             <label>Password</label>
+                        </div>
+                        <div className="input--field-box">
+                            <input
+                            className={`input--field ${(this.state.password_confirmation)? 'focused' : '' }`}
+                            type="password" 
+                            name="password_confirmation" 
+                            onChange={this.onChange} 
+                            onBlur={this.onBlur}/>
+                            <label>Confirm Password</label>
                         </div>
                         <input type="submit" value="Sign Up" className="secondary-button" onClick={this.signup}/>
                         <Link className="button" to="/login/">Login</Link>
