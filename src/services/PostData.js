@@ -1,12 +1,13 @@
 export function PostData(type, userData) {
-    let BaseUrl = 'https://bokoo.matrixpanel.in/api/';
+    let FinalUrl = 'https://bokoo.matrixpanel.in/api/' + type;
     // alert(JSON.stringify(userData))
     return new Promise((resolve, reject) => {
-        fetch(BaseUrl+type, {
+        fetch(FinalUrl, {
             method: 'POST',
             header: {
-                'Accept': 'application/json',
-                'Content-Type' : 'application/json'
+                "Access-Control-Origin": "*",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(userData)
         })
