@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
 import '../css/home.css'
 import VideoPlayer from 'react-video-js-player'
 import Demo from '../media/demo.mp4'
@@ -6,7 +8,8 @@ const videoSrc = Demo;
 class Home extends Component {
     render(){
         return(
-        <div className="wrapper">
+        <div className="wrapper home-wrapper">
+            <Navbar />
             <div className="banner-video">
             <VideoPlayer
                 controls={true}
@@ -133,7 +136,9 @@ class Home extends Component {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>);
+        
     }
 }
 

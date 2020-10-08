@@ -1,0 +1,93 @@
+.login-box-parent{
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+    background-color: #477F00;
+}
+.login-box {
+    width: 600px;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    box-shadow: 0 1px 12px 0 rgba(0,0,0,.18);
+    padding: 20px;
+    background-color: #fff;
+}
+.login-box .button, .login-box .secondary-button {
+    padding: 5px 12px;
+    color: #fff;
+    font-size: 16px;
+    background-color: #477F00;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 20px 5px 0 0;
+    box-sizing: border-box;
+    line-height: 1.28;
+    height: 30px;
+    display: inline-block;
+    transition: 0.3s all;
+}
+.login-box .secondary-button {
+    background-color: #fff;
+    font-size: 14px;
+    color: #477F00;
+    border: 1px solid #477F00;
+}
+.login-box .button:hover, .login-box .secondary-button:hover {
+    transform: scale(1.1);
+}
+.login-box .secondary-button:hover {
+    background-color: rgba(71, 127, 0, 0.3);
+}
+.input--field-box {    
+    position: relative;
+}
+.input--field-box label {
+    position: absolute;
+    left: 0px;
+    top: 12px;
+    font-size: 16px;
+    z-index: -1;
+    transition: 0.3s all;
+}
+
+.input--field-box input:focus + label, .focused + label {
+    top: -5px;
+    left: 0px;
+    font-size: 11px;
+    color: #00b285;
+    z-index: 1;
+}
+
+.input--field {background: transparent!important;}
+
+.input--field::-webkit-input-placeholder { /* Edge */
+    opacity: 0;
+    color: #cecece;
+    font-size: 16px;
+}
+.input--field:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    opacity: 0;
+    color: #cecece;
+    font-size: 16px;
+}
+.input--field::placeholder {
+    opacity: 0;
+    color: #cecece;
+    font-size: 16px;
+}
+.input--field:focus::-webkit-input-placeholder {
+    opacity: 1;
+}
+.input--field:focus:-ms-input-placeholder {
+    opacity: 1;
+}
+.input--field:focus::placeholder {
+    opacity: 1;
+}

@@ -15,7 +15,7 @@ const Navbar = () => {
                     <li><NavLink to="/contact/">Contact</NavLink></li>
                 </ul>
                 <ul className="col s4 bokoo-right-menu">
-                    <li><NavLink className="bokoo-user-acc" to="/"><img alt='logo' src={userIcon}/>My Account</NavLink></li>
+                    <li><NavLink className="bokoo-user-acc" to="/dashboard/"><img alt='logo' src={userIcon}/>My Account</NavLink></li>
                 </ul>
             </div>
         </nav>
