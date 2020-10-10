@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {PostData} from '../services/PostData'
+// import {GetData} from '../services/GetData'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/login.css'
 
@@ -7,12 +8,13 @@ class Signup extends Component {
     constructor(props){
         super(props);
             this.state = {
-                'name': '',
-                'email': '',
-                'mobile': '',
-                'password': '',
-                'password_confirmation' : '',              
-                'redirect': false
+                name: '',
+                email: '',
+                mobile: '',
+                password: '',
+                password_confirmation : '',              
+                redirect: false,
+                userId: ''
             }
         
         this.signup = this.signup.bind(this);
@@ -25,14 +27,27 @@ class Signup extends Component {
         if(this.state.email && this.state.password){
             PostData('register', this.state).then((result) => {
                 let responseJson = result;
-                if(responseJson.userData){
-                    sessionStorage.setItem('userData', responseJson);
+                console.log(responseJson)
+                if(responseJson.access_token){
+                    localStorage.setItem('userData', JSON.stringify(responseJson));
+                    let data = {
+                        userId: JSON.parse(localStorage.getItem('userData')).user.id
+                    }
+                    PostData('user/get-profile', data).then((result) => {
+                        let getResponseJson = result;
+                        localStorage.setItem('profileDetails', JSON.stringify(getResponseJson));
+                        console.log(getResponseJson)
+                    })
+                    PostData('user/get-bank-details', data).then((result) => {
+                        let getResponseJson = result;
+                        localStorage.setItem('bankDetails', JSON.stringify(getResponseJson));
+                        console.log(getResponseJson)
+                    })
                     this.setState({
                         redirect: true
                     })
                 }else{
-                    console.log('Sign Up Error');
-                    alert(responseJson.message)
+                    alert('Sign Up Error');
                 }
             })
         }
@@ -58,7 +73,7 @@ class Signup extends Component {
         if(this.state.redirect) {
             return(<Redirect to={'/dashboard'}/>)
         }
-        if(sessionStorage.getItem('userData')) {
+        if(localStorage.getItem('userData')) {
             return(<Redirect to={'/dashboard'}/>)
         }
 

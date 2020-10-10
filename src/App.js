@@ -8,6 +8,7 @@ import Signup from './components/Signup'
 import Dashboard from './components/Dashboard'
 import AccountDetails from './components/AccountDetails'
 import ContentLibrary from './components/ContentLibrary'
+import Logout from './components/Logout'
 
 class App extends Component {
   render(){
@@ -22,6 +23,7 @@ class App extends Component {
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/account-details" component={AccountDetails} />
           <Route path="/content-library" component={ContentLibrary} />
+          <Route path="/logout" component={Logout} />
         </div>
       </BrowserRouter>
     );

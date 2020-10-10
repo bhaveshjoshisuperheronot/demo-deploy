@@ -13,11 +13,11 @@ class ContentLibrary extends Component {
     }
 
     componentDidMount() {
-        if(sessionStorage.getItem('userData')){
-            console.log('Call Dashboard');
+        if(localStorage.getItem('userData')){
+
         }else{
             this.setState({
-                //redirect: true
+                redirect: true
             })
         }
     }

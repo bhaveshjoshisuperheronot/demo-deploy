@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {PostData} from '../services/PostData'
+// import {GetData} from '../services/GetData'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/login.css'
 
@@ -21,13 +22,26 @@ class Login extends Component {
         if(this.state.email && this.state.password){
             PostData('login', this.state).then((result) => {
                 let responseJson = result;
-                if(responseJson.userData){
-                    sessionStorage.setItem('userData', responseJson);
+                if(responseJson.access_token){
+                    localStorage.setItem('userData', JSON.stringify(responseJson));
+                    let data = {
+                        userId: JSON.parse(localStorage.getItem('userData')).user.id
+                    }
+                    PostData('user/get-profile', data).then((result) => {
+                        let getResponseJson = result;
+                        localStorage.setItem('profileDetails', JSON.stringify(getResponseJson));
+                        console.log(getResponseJson)
+                    })
+                    PostData('user/get-bank-details', data).then((result) => {
+                        let getResponseJson = result;
+                        localStorage.setItem('bankDetails', JSON.stringify(getResponseJson));
+                        console.log(getResponseJson)
+                    })
                     this.setState({
                         redirect: true
                     })
                 }else{
-                    console.log('Login Error');
+                    alert('Login Error');
                 }
             })
         }
@@ -53,7 +67,7 @@ class Login extends Component {
         if(this.state.redirect) {
             return(<Redirect to={'/dashboard'}/>)
         }
-        if(sessionStorage.getItem('userData')) {
+        if(localStorage.getItem('userData')) {
             return(<Redirect to={'/dashboard'}/>)
         }
 
