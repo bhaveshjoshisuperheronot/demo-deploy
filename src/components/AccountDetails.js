@@ -5,11 +5,14 @@ import SidebarNav from '../components/SidebarNav'
 import DashboardHeader from '../components/DashboardHeader'
 import {PostData} from '../services/PostData'
 import '../css/dashboard.css'
+import { saveProfileDetails, saveBankDetails } from '../store/actions/dashboard';
+import { connect } from 'react-redux'; 
  
 class Dashboard extends Component {
     constructor(props){
         super(props);
             this.state = {
+                unmounted: false,
                 redirect: false,
                 userId: '',
                 registeredAs: '1',
@@ -51,45 +54,49 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        if(localStorage.getItem('userData')){
+        if(this.props.redirect){
             this.setState({
-                userId: JSON.parse(localStorage.getItem('userData')).user.id,
-                firstName: JSON.parse(localStorage.getItem('userData')).user.name,
-                email: JSON.parse(localStorage.getItem('userData')).user.email,
-                mobile: JSON.parse(localStorage.getItem('userData')).user.mobile
+                companyName: this.props.companyName,
+                doingBusinessAs: this.props.doingBusinessAs,
+                companyType: this.props.companyType,
+                primaryBusiness: this.props.primaryBusiness,
+                companyWebsite: this.props.companyWebsite,
+                linkedInProfile: this.props.linkedInProfile,
+                title: this.props.title,
+                secondaryEmail: this.props.secondaryEmail,
+                officeNumber: this.props.officeNumber,
+                address: this.props.address,
+                city: this.props.city,
+                state: this.props.state,
+                postalCode: this.props.postalCode,
+                country: this.props.country,
+                taxType: this.props.taxType,
+                taxId: this.props.taxId,
+                accountNumber: this.props.accountNumber,
+                bankName: this.props.bankName,
+                branchAddress: this.props.branchAddress,
+                accountType: this.props.accountType,
+                accountHolderName: this.props.accountHolderName,
+                routingNumber: this.props.routingNumber,
+                paypalId: this.props.paypalId,
+                swiftCode: this.props.swiftCode,
+                userId: this.state.id,
+                firstName: this.props.name,
+                email: this.props.email,
+                mobile: this.props.mobile
             })
-            if(localStorage.getItem('profileDetails') && localStorage.getItem('bankDetails')){
-                this.setState({
-                    companyName: JSON.parse(localStorage.getItem('profileDetails')).data.companyName,
-                    doingBusinessAs: JSON.parse(localStorage.getItem('profileDetails')).data.doingBusinessAs,
-                    companyType: JSON.parse(localStorage.getItem('profileDetails')).data.companyType,
-                    primaryBusiness: JSON.parse(localStorage.getItem('profileDetails')).data.primaryBusiness,
-                    companyWebsite: JSON.parse(localStorage.getItem('profileDetails')).data.companyWebsite,
-                    linkedInProfile: JSON.parse(localStorage.getItem('profileDetails')).data.linkedInProfile,
-                    title: JSON.parse(localStorage.getItem('profileDetails')).data.title,
-                    secondaryEmail: JSON.parse(localStorage.getItem('profileDetails')).data.secondaryEmail,
-                    officeNumber: JSON.parse(localStorage.getItem('profileDetails')).data.officeNumber,
-                    address: JSON.parse(localStorage.getItem('profileDetails')).data.address,
-                    city: JSON.parse(localStorage.getItem('profileDetails')).data.city,
-                    state: JSON.parse(localStorage.getItem('profileDetails')).data.state,
-                    postalCode: JSON.parse(localStorage.getItem('profileDetails')).data.postalCode,
-                    country: JSON.parse(localStorage.getItem('profileDetails')).data.country,
-                    taxId: JSON.parse(localStorage.getItem('bankDetails')).data.taxId,
-                    accountNumber: JSON.parse(localStorage.getItem('bankDetails')).data.accountNumber,
-                    bankName: JSON.parse(localStorage.getItem('bankDetails')).data.bankName,
-                    branchAddress: JSON.parse(localStorage.getItem('bankDetails')).data.branchAddress,
-                    accountType: JSON.parse(localStorage.getItem('bankDetails')).data.accountType,
-                    accountHolderName: JSON.parse(localStorage.getItem('bankDetails')).data.accountHolderName,
-                    routingNumber: JSON.parse(localStorage.getItem('bankDetails')).data.routingNumber,
-                    paypalId: JSON.parse(localStorage.getItem('bankDetails')).data.paypalId,
-                    swiftCode: JSON.parse(localStorage.getItem('bankDetails')).data.swiftCode
-                })
-            }
         }else{
             this.setState({
                 redirect: true
             })
         }
+        
+        
+    }
+    componentWillUnmount() {
+        this.setState({
+            unmounted: true
+        })
     }
 
     onValueChange(event) {
@@ -120,7 +127,7 @@ class Dashboard extends Component {
 
     saveDetails(e) {
         const userData = {
-            userId: this.state.userId,
+            userId: this.props.id,
             companyName: this.state.companyName,
             doingBusinessAs: this.state.doingBusinessAs,
             companyType: this.state.companyType,
@@ -139,15 +146,13 @@ class Dashboard extends Component {
             country: this.state.country
         }
 
-        PostData('user/update-profile', userData).then((result) => {
-            let responseJson = result;
-            console.log(responseJson)
-        })
+        this.props.saveProfileDetails(userData)
+        
     }
 
     saveBankDetails(e) {
         const userData = {
-            userId: this.state.userId,
+            userId: this.props.id,
             taxType: this.state.taxType,
             taxId: this.state.taxId,
             accountNumber: this.state.accountNumber,
@@ -160,10 +165,8 @@ class Dashboard extends Component {
             swiftCode: this.state.swiftCode
         }
 
-        PostData('user/update-bank-details', userData).then((result) => {
-            let responseJson = result;
-            console.log(responseJson)
-        })
+        this.props.saveBankDetails(userData)
+        
     }
 
     render() {
@@ -569,4 +572,48 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard
+
+const mapStateToProps = (state) => {
+    return {
+        companyName: state.userData.companyName,
+        doingBusinessAs: state.userData.doingBusinessAs,
+        companyType: state.userData.companyType,
+        primaryBusiness: state.userData.primaryBusiness,
+        companyWebsite: state.userData.companyWebsite,
+        linkedInProfile: state.userData.linkedInProfile,
+        title: state.userData.title,
+        secondaryEmail: state.userData.secondaryEmail,
+        officeNumber: state.userData.officeNumber,
+        address: state.userData.address,
+        city: state.userData.city,
+        state: state.userData.state,
+        postalCode: state.userData.postalCode,
+        country: state.userData.country,
+        taxType: state.userData.taxType,
+        taxId: state.userData.taxId,
+        accountNumber: state.userData.accountNumber,
+        bankName: state.userData.bankName,
+        branchAddress: state.userData.branchAddress,
+        accountType: state.userData.accountType,
+        accountHolderName: state.userData.accountHolderName,
+        routingNumber: state.userData.routingNumber,
+        paypalId: state.userData.paypalId,
+        swiftCode: state.userData.swiftCode,
+        callGetApi: state.userData.callGetApi,
+        id: state.auth.id,
+        userId: state.auth.id,
+        firstName: state.auth.name,
+        email: state.auth.email,
+        mobile: state.auth.mobile,
+        redirect: state.auth.redirect
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        saveProfileDetails: (data) => dispatch(saveProfileDetails(data)),
+        saveBankDetails: (data) => dispatch(saveBankDetails(data))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

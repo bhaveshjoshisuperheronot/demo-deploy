@@ -13,11 +13,11 @@ class ContentLibrary extends Component {
     }
 
     componentDidMount() {
-        if(localStorage.getItem('userData')){
+        if(localStorage.getItem('persist:auth').redirect === 'true'){
 
         }else{
             this.setState({
-                redirect: true
+                redirect: false
             })
         }
     }

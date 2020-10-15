@@ -1,51 +1,23 @@
 import React, { Component } from 'react'
-import {PostData} from '../services/PostData'
-// import {GetData} from '../services/GetData'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/login.css'
+import { login } from '../store/actions/auth';
+import { connect } from 'react-redux';
 
 class Login extends Component {
     constructor(props){
         super(props);
             this.state = {
                 email: '',
-                password: '',
-                redirect: false
+                password: ''
             }
         
-        this.login = this.login.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onBlur = this.onBlur.bind(this);
     }
 
-    login() {
-        if(this.state.email && this.state.password){
-            PostData('login', this.state).then((result) => {
-                let responseJson = result;
-                if(responseJson.access_token){
-                    localStorage.setItem('userData', JSON.stringify(responseJson));
-                    let data = {
-                        userId: JSON.parse(localStorage.getItem('userData')).user.id
-                    }
-                    PostData('user/get-profile', data).then((result) => {
-                        let getResponseJson = result;
-                        localStorage.setItem('profileDetails', JSON.stringify(getResponseJson));
-                        console.log(getResponseJson)
-                    })
-                    PostData('user/get-bank-details', data).then((result) => {
-                        let getResponseJson = result;
-                        localStorage.setItem('bankDetails', JSON.stringify(getResponseJson));
-                        console.log(getResponseJson)
-                    })
-                    this.setState({
-                        redirect: true
-                    })
-                }else{
-                    alert('Login Error');
-                }
-            })
-        }
-    }
+    
 
     onChange(e) {
         this.setState({
@@ -62,12 +34,13 @@ class Login extends Component {
         
     }
 
+    handleSubmit = (e) => {
+        this.props.login({email: this.state.email, password: this.state.password})
+    }
+
 
     render() {
-        if(this.state.redirect) {
-            return(<Redirect to={'/dashboard'}/>)
-        }
-        if(localStorage.getItem('userData')) {
+        if(this.props.redirect) {
             return(<Redirect to={'/dashboard'}/>)
         }
 
@@ -96,7 +69,7 @@ class Login extends Component {
                             onBlur={this.onBlur}/>
                             <label>Password</label>
                         </div>
-                        <input type="submit" value="Login" className="button" onClick={this.login}/>
+                        <input type="submit" value="Login" className="button" onClick={this.handleSubmit}/>
                         <Link to="/signup/" className="secondary-button">Sign Up</Link>
                     </div>                
                 </div>
@@ -105,4 +78,17 @@ class Login extends Component {
     }
 }
 
-export default Login
+const mapStateToProps = (state) => {
+    return {
+        redirect: state.auth.redirect,
+        id: state.auth.id
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: (creds) => dispatch(login(creds))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

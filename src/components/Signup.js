@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import {PostData} from '../services/PostData'
-// import {GetData} from '../services/GetData'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/login.css'
+import { signup, socialAuth } from '../store/actions/auth';
+import { connect } from 'react-redux';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 
 class Signup extends Component {
     constructor(props){
@@ -17,40 +19,42 @@ class Signup extends Component {
                 userId: ''
             }
         
-        this.signup = this.signup.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onBlur = this.onBlur.bind(this);
+        this.responseGoogle = this.responseGoogle.bind(this);
+        this.responseFacebook = this.responseFacebook.bind(this);
     }
 
-    signup() {
+    
 
+    handleSubmit = (e) => {
         if(this.state.email && this.state.password){
-            PostData('register', this.state).then((result) => {
-                let responseJson = result;
-                console.log(responseJson)
-                if(responseJson.access_token){
-                    localStorage.setItem('userData', JSON.stringify(responseJson));
-                    let data = {
-                        userId: JSON.parse(localStorage.getItem('userData')).user.id
-                    }
-                    PostData('user/get-profile', data).then((result) => {
-                        let getResponseJson = result;
-                        localStorage.setItem('profileDetails', JSON.stringify(getResponseJson));
-                        console.log(getResponseJson)
-                    })
-                    PostData('user/get-bank-details', data).then((result) => {
-                        let getResponseJson = result;
-                        localStorage.setItem('bankDetails', JSON.stringify(getResponseJson));
-                        console.log(getResponseJson)
-                    })
-                    this.setState({
-                        redirect: true
-                    })
-                }else{
-                    alert('Sign Up Error');
-                }
-            })
+            this.props.signup(this.state)
         }
+    }
+
+    responseGoogle(res) {
+        console.log(res)
+        const userData = {
+            type: 'googleLogin',
+            access_token : res.accessToken,
+            name: res.profileObj.name,
+            email: res.profileObj.email,
+            profileObj: res.profileObj
+        }
+        this.props.socialAuth(userData)
+    }
+    responseFacebook(res) {
+        console.log(res)
+        const userData = {
+             type: 'fbLogin',
+             access_token : res.accessToken,
+             name: res.name,
+             email: res.email,
+             profileObj: res
+         }
+         this.props.socialAuth(userData)
     }
 
     onChange(e) {
@@ -70,10 +74,7 @@ class Signup extends Component {
 
 
     render() {
-        if(this.state.redirect) {
-            return(<Redirect to={'/dashboard'}/>)
-        }
-        if(localStorage.getItem('userData')) {
+        if(this.props.redirect) {
             return(<Redirect to={'/dashboard'}/>)
         }
 
@@ -132,8 +133,20 @@ class Signup extends Component {
                             onBlur={this.onBlur}/>
                             <label>Confirm Password</label>
                         </div>
-                        <input type="submit" value="Sign Up" className="secondary-button" onClick={this.signup}/>
+                        <input type="submit" value="Sign Up" className="secondary-button" onClick={this.handleSubmit}/>
                         <Link className="button" to="/login/">Login</Link>
+                        <GoogleLogin
+                            clientId="526757781205-s2rgq6tdurv3shutf49iu037qflhe5e5.apps.googleusercontent.com"
+                            buttonText="Login"
+                            scope="https://www.googleapis.com/auth/user.birthday.read"
+                            onSuccess={this.responseGoogle}
+                            onFailure={this.responseGoogle}
+                            cookiePolicy={'single_host_origin'}
+                        />
+                        <FacebookLogin
+                            appId="1035097680244932"
+                            fields="name,email,picture"
+                            callback={this.responseFacebook} />
                     </div>                
                 </div>
             </div>
@@ -141,4 +154,19 @@ class Signup extends Component {
     }
 }
 
-export default Signup
+
+const mapStateToProps = (state) => {
+    return {
+        redirect: state.auth.redirect,
+        id: state.auth.id
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signup: (creds) => dispatch(signup(creds)),
+        socialAuth: (creds) => dispatch(socialAuth(creds))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

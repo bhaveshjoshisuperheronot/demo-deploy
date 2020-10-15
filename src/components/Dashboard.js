@@ -3,7 +3,9 @@ import { Redirect } from 'react-router-dom'
 import SidebarNav from '../components/SidebarNav'
 import DashboardHeader from '../components/DashboardHeader'
 import '../css/dashboard.css'
- 
+import { getProfileDetails, getBankDetails } from '../store/actions/dashboard';
+import { connect } from 'react-redux'; 
+
 class Dashboard extends Component {
     constructor(props){
         super(props);
@@ -13,8 +15,12 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        if(localStorage.getItem('userData')){
-            
+        if(this.props.redirect){
+            if(!this.props.callGetApi){
+                let data = this.props.id;
+                this.props.getProfileDetails({userId: data})
+                this.props.getBankDetails({userId: data})
+            }
         }else{
             this.setState({
                 redirect: true
@@ -46,4 +52,19 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard
+const mapStateToProps = (state) => {
+    return {
+        callGetApi: state.userData.callGetApi,
+        id: state.auth.id,
+        redirect: state.auth.id
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getProfileDetails: (data) => dispatch(getProfileDetails(data)),
+        getBankDetails: (data) => dispatch(getBankDetails(data))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

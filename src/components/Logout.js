@@ -1,38 +1,28 @@
 import React, { Component } from 'react'
-import {PostData} from '../services/PostData'
-// import {GetData} from '../services/GetData'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/login.css'
+import { logout } from '../store/actions/auth';
+import { connect } from 'react-redux';
 
 class Logout extends Component {
     constructor(props){
         super(props);
             this.state = {
                 email: '',
-                password: '',
-                redirect: false
+                password: ''
             }
         
-        this.logout = this.logout.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    logout() {        
-            PostData('logout', this.state).then((result) => {
-              localStorage.clear();
-              this.setState({
-                redirect: true
-              })
-            })
-        
-    }
 
-    componentDidMount() {
-        
+    handleSubmit = (e) => {
+        this.props.logout({email: this.state.email, password: this.state.password})
     }
 
 
     render() {
-        if(this.state.redirect) {
+        if(!this.props.redirect) {
             return(<Redirect to={'/login'}/>)
         }
 
@@ -41,7 +31,7 @@ class Logout extends Component {
                 <div className="login-box row">
                     <div className="col s12">
                         <h4>Do you want to Logout?</h4>
-                        <input type="submit" value="Logout" className="button" onClick={this.logout}/>
+                        <input type="submit" value="Logout" className="button" onClick={this.handleSubmit}/>
                         <Link to="/dashboard/" className="secondary-button">Back to Dashboard</Link>
                     </div>                
                 </div>
@@ -50,4 +40,16 @@ class Logout extends Component {
     }
 }
 
-export default Logout
+const mapStateToProps = (state) => {
+    return {
+        redirect: state.auth.redirect
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        logout: (creds) => dispatch(logout(creds))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);

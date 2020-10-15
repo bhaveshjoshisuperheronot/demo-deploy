@@ -82,7 +82,7 @@ class DashboardHeader extends Component {
                         <div className="dashboard-header-date">{this.state.date} {this.state.month}, {this.state.year}</div>
                         <div className="dashboard-header-time">{this.state.hours}:{this.state.minutes}</div>
                     </div>
-                    <div className="dashboard-header-name">Welcome, {JSON.parse(localStorage.getItem('userData')).user.name}</div>
+                    <div className="dashboard-header-name">Welcome, { JSON.parse(JSON.parse(localStorage.getItem('persist:auth')).name) }</div>
                 </div>
         )
     }
