@@ -1,6 +1,7 @@
 import React, { Component }  from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../media/bokoo-logo.png';
+import { connect } from 'react-redux';
 
 class DashboardHeader extends Component {
     
@@ -82,10 +83,16 @@ class DashboardHeader extends Component {
                         <div className="dashboard-header-date">{this.state.date} {this.state.month}, {this.state.year}</div>
                         <div className="dashboard-header-time">{this.state.hours}:{this.state.minutes}</div>
                     </div>
-                    <div className="dashboard-header-name">Welcome, { JSON.parse(JSON.parse(localStorage.getItem('persist:auth')).name) }</div>
+                    <div className="dashboard-header-name">Welcome, { this.props.name }</div>
                 </div>
         )
     }
 }
 
-export default DashboardHeader
+const mapStateToProps = (state) => {
+    return {
+        name: state.auth.name
+    }
+}
+
+export default connect(mapStateToProps)(DashboardHeader);

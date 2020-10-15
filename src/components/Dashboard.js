@@ -31,7 +31,7 @@ class Dashboard extends Component {
     render() {
 
         if(this.state.redirect) {
-            return(<Redirect to={'/login'}/>)
+            return(<Redirect to={'/'}/>)
         }
 
         return(

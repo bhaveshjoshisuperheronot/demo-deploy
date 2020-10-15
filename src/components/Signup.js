@@ -38,21 +38,25 @@ class Signup extends Component {
         console.log(res)
         const userData = {
             type: 'googleLogin',
-            access_token : res.accessToken,
             name: res.profileObj.name,
             email: res.profileObj.email,
-            profileObj: res.profileObj
+            data: {
+                access_token : res.accessToken,
+                profileObj: res.profileObj
+            }            
         }
         this.props.socialAuth(userData)
     }
     responseFacebook(res) {
         console.log(res)
         const userData = {
-             type: 'fbLogin',
-             access_token : res.accessToken,
+             type: 'fbLogin',             
              name: res.name,
              email: res.email,
-             profileObj: res
+             data: {
+                access_token : res.accessToken,
+                profileObj: res
+            }             
          }
          this.props.socialAuth(userData)
     }
@@ -79,10 +83,14 @@ class Signup extends Component {
         }
 
         return(
-            <div className="login-box-parent">
+            <div className="signup-box-parent">
                 <div className="login-box row">
+                    <div className="close-button" onClick={this.props.triggerCallClosePopUp}>&#10006;</div>
                     <h4 className="col s12">Sign Up</h4>
-                    <div className="col s6">
+                    <div className="col s5">
+                        
+                    </div>
+                    <div className="col s7">
                         <div className="input--field-box">
                             <input 
                             className={`input--field ${(this.state.name)? 'focused' : '' }`}
@@ -101,11 +109,10 @@ class Signup extends Component {
                             placeholder="9876543210" 
                             onChange={this.onChange} 
                             onBlur={this.onBlur}/>
-                            <label>Mobile Number</label>
+                            <label>Year of Birth</label>
                         </div>
-                    </div>
-                    <div className="col s6">
-                        <div className="input--field-box">
+                        <div className="row margin-0">
+                        <div className="input--field-box col s6">
                             <input 
                             className={`input--field ${(this.state.email)? 'focused' : '' }`}
                             type="email" 
@@ -115,7 +122,19 @@ class Signup extends Component {
                             onBlur={this.onBlur}/>
                             <label>Email Address</label>
                         </div>
-                        <div className="input--field-box">
+                        <div className="input--field-box col s6">
+                            <input 
+                            className={`input--field ${(this.state.confirmEmail)? 'focused' : '' }`}
+                            type="email" 
+                            name="confirmEmail" 
+                            placeholder="abc@xyz.com" 
+                            onChange={this.onChange} 
+                            onBlur={this.onBlur}/>
+                            <label>Confirm Email Address</label>
+                        </div>
+                        </div>
+                        <div className="row margin-0">
+                        <div className="input--field-box col s6">
                             <input
                             className={`input--field ${(this.state.password)? 'focused' : '' }`}
                             type="password" 
@@ -124,7 +143,7 @@ class Signup extends Component {
                             onBlur={this.onBlur}/>
                             <label>Password</label>
                         </div>
-                        <div className="input--field-box">
+                        <div className="input--field-box col s6">
                             <input
                             className={`input--field ${(this.state.password_confirmation)? 'focused' : '' }`}
                             type="password" 
@@ -133,8 +152,9 @@ class Signup extends Component {
                             onBlur={this.onBlur}/>
                             <label>Confirm Password</label>
                         </div>
-                        <input type="submit" value="Sign Up" className="secondary-button" onClick={this.handleSubmit}/>
-                        <Link className="button" to="/login/">Login</Link>
+                        </div>
+                        <input type="submit" value="Sign Up" className="button" onClick={this.handleSubmit}/>
+                        <div className="social--login">
                         <GoogleLogin
                             clientId="526757781205-s2rgq6tdurv3shutf49iu037qflhe5e5.apps.googleusercontent.com"
                             buttonText="Login"
@@ -142,11 +162,17 @@ class Signup extends Component {
                             onSuccess={this.responseGoogle}
                             onFailure={this.responseGoogle}
                             cookiePolicy={'single_host_origin'}
+                            className="social--login-button social--login-button-google"
                         />
                         <FacebookLogin
                             appId="1035097680244932"
                             fields="name,email,picture"
-                            callback={this.responseFacebook} />
+                            callback={this.responseFacebook}
+                            textButton="FB"
+                            className="social--login-button social--login-button-facebook"
+                        />
+                        </div>
+                        <div className="sign-up-text">Already have an account <Link onClick={this.props.triggerCallLoginUp}>SIGN IN</Link></div>
                     </div>                
                 </div>
             </div>

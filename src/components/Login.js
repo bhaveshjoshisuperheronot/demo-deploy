@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import '../css/login.css'
-import { login } from '../store/actions/auth';
+import { login, socialAuth } from '../store/actions/auth';
 import { connect } from 'react-redux';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 
 class Login extends Component {
     constructor(props){
@@ -15,8 +17,36 @@ class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onBlur = this.onBlur.bind(this);
+        this.responseFacebook = this.responseFacebook.bind(this);
+        this.responseGoogle = this.responseGoogle.bind(this);
     }
 
+    responseGoogle(res) {
+        console.log(res)
+        const userData = {
+            type: 'googleLogin',
+            name: res.profileObj.name,
+            email: res.profileObj.email,
+            data: {
+                access_token : res.accessToken,
+                profileObj: res.profileObj
+            }            
+        }
+        this.props.socialAuth(userData)
+    }
+    responseFacebook(res) {
+        console.log(res)
+        const userData = {
+             type: 'fbLogin',             
+             name: res.name,
+             email: res.email,
+             data: {
+                access_token : res.accessToken,
+                profileObj: res
+            }             
+         }
+         this.props.socialAuth(userData)
+    }
     
 
     onChange(e) {
@@ -47,9 +77,9 @@ class Login extends Component {
         return(
             <div className="login-box-parent">
                 <div className="login-box row">
-                    <div className="col s6"></div>
-                    <div className="col s6">
-                        <h4>Login</h4>
+                    <div className="close-button" onClick={this.props.triggerCallClosePopUp}>&#10006;</div>
+                    <div className="col s12">
+                        <h4>Sign In</h4>
                         <div className="input--field-box">
                             <input 
                             className={`input--field ${(this.state.email)? 'focused' : '' }`}
@@ -70,7 +100,24 @@ class Login extends Component {
                             <label>Password</label>
                         </div>
                         <input type="submit" value="Login" className="button" onClick={this.handleSubmit}/>
-                        <Link to="/signup/" className="secondary-button">Sign Up</Link>
+                        
+                        <div className="social--login">
+                        <GoogleLogin
+                            clientId="526757781205-s2rgq6tdurv3shutf49iu037qflhe5e5.apps.googleusercontent.com"
+                            buttonText="Login"
+                            scope="https://www.googleapis.com/auth/user.birthday.read"
+                            onSuccess={this.responseGoogle}
+                            onFailure={this.responseGoogle}
+                            cookiePolicy={'single_host_origin'}
+                        />
+                        <FacebookLogin
+                            appId="1035097680244932"
+                            fields="name,email,picture"
+                            callback={this.responseFacebook}
+                            textButton="FB"
+                        />
+                        </div>
+                        <div className="sign-up-text">Click here to <Link onClick={this.props.triggerCallSignUp}>SIGN UP</Link> for a Free Account</div>
                     </div>                
                 </div>
             </div>
@@ -87,7 +134,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        login: (creds) => dispatch(login(creds))
+        login: (creds) => dispatch(login(creds)),
+        socialAuth: (creds) => dispatch(socialAuth(creds))
     }
 }
 

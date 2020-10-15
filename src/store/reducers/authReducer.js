@@ -4,6 +4,7 @@ const initState = {
     mobile: '',
     name: '',
     redirect: false,
+    isAuth: false,
     access_token: null
 }
 
@@ -16,7 +17,8 @@ const authReducer = (state = initState, action) => {
                 id: '',
                 mobile: '',
                 name: '',
-                redirect: false
+                redirect: false,
+                isAuth: false
             };
         case 'LOGIN_SUCCESS':
             return {
@@ -25,7 +27,8 @@ const authReducer = (state = initState, action) => {
                 id: action.id,
                 mobile: action.mobile,
                 name: action.name,
-                redirect: true
+                redirect: true,
+                isAuth: true
             };
         case 'LOGOUT':
             return {
@@ -34,7 +37,8 @@ const authReducer = (state = initState, action) => {
                 id: '',
                 mobile: '',
                 name: '',
-                redirect: false
+                redirect: false,
+                isAuth: false
             };
         default: 
             return state;

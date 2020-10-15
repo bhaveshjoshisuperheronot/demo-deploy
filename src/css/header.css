@@ -24,6 +24,7 @@
 .bokoo-user-acc{
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 .bokoo-user-acc img{
     margin: 0 5px 0 0;

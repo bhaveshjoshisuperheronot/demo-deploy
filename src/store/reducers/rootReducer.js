@@ -7,7 +7,7 @@ import storage from 'redux-persist/lib/storage'
 const persistConfig = {
     key: 'auth',
     storage,
-    whitelist: ['email', 'id', 'mobile', 'name', 'redirect']
+    whitelist: ['email', 'id', 'mobile', 'name', 'redirect', 'isAuth']
 }
 
 const detailsConfig = {
